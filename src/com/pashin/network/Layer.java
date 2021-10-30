@@ -2,30 +2,28 @@ package com.pashin.network;
 
 import java.util.ArrayList;
 
-public abstract class Layer {
+public abstract class Layer<N extends Neuron> {
 
-    protected ArrayList<Neuron> listOfNeurons;
+    protected ArrayList<N> listOfNeurons;
 
     protected int numberOfNeuronsInLayer;
 
-    protected Layer(ArrayList<Neuron> listOfNeurons, int numberOfNeuronsInLayer) {
-        this.listOfNeurons = listOfNeurons;
+    protected Layer(int numberOfNeuronsInLayer) {
         this.numberOfNeuronsInLayer = numberOfNeuronsInLayer;
+        this.listOfNeurons = new ArrayList<>();
     }
 
-    protected ArrayList<Neuron> getListOfNeurons() {
+    public ArrayList<N> getListOfNeurons() {
         return listOfNeurons;
     }
 
-    protected void setListOfNeurons(ArrayList<Neuron> listOfNeurons) {
+    public void setListOfNeurons(ArrayList<N> listOfNeurons) {
         this.listOfNeurons = listOfNeurons;
+        this.numberOfNeuronsInLayer = listOfNeurons.size();
     }
 
-    protected int getNumberOfNeuronsInLayer() {
+    public int getNumberOfNeuronsInLayer() {
         return numberOfNeuronsInLayer;
     }
 
-    protected void setNumberOfNeuronsInLayer(int numberOfNeuronsInLayer) {
-        this.numberOfNeuronsInLayer = numberOfNeuronsInLayer;
-    }
 }

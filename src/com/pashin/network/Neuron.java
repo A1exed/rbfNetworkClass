@@ -2,29 +2,39 @@ package com.pashin.network;
 
 import java.util.ArrayList;
 
-public class Neuron {
+public abstract class Neuron {
 
-    private ArrayList<Double> listOfWeightIn;
+    protected ArrayList<Double> weights;
 
-    private ArrayList<Double> listOfWeightOut;
+    protected double inputValue;
 
-    public Double initNeuron() {
-        return 0.0;
+    protected double outputValue;
+
+    protected Neuron(int numberOfRelations) {
+        weights = new ArrayList<>();
+        for (int i = 0; i < numberOfRelations; i++) {
+            weights.add(Math.random() / 10);
+        }
     }
 
-    public ArrayList<Double> getListOfWeightIn() {
-        return listOfWeightIn;
+    protected void correctWeight() {
+        // TODO: корректировка весов
     }
 
-    public void setListOfWeightIn(ArrayList<Double> listOfWeightIn) {
-        this.listOfWeightIn = listOfWeightIn;
+    public ArrayList<Double> getWeights() {
+        return weights;
     }
 
-    public ArrayList<Double> getListOfWeightOut() {
-        return listOfWeightOut;
+    public double getInputValue() {
+        return inputValue;
     }
 
-    public void setListOfWeightOut(ArrayList<Double> listOfWeightOut) {
-        this.listOfWeightOut = listOfWeightOut;
+    public void setInputValue(double inputValue) {
+        this.inputValue = inputValue;
     }
+
+    public double getOutputValue() {
+        return outputValue;
+    }
+
 }
