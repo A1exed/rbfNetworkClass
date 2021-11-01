@@ -15,18 +15,18 @@ public class OutputLayer extends Layer<OutputNeuron> {
         }
     }
 
-    public void classify(ArrayList<HiddenNeuron> hiddenNeurons) {
-        OutputNeuron neuron;
+    public void calculateValues(ArrayList<HiddenNeuron> hiddenNeurons) {
+        double sum;
         for (int i = 0; i < numberOfNeuronsInLayer; i++) {
+            sum = 0.0;
             for (HiddenNeuron hiddenNeuron : hiddenNeurons) {
-                neuron = listOfNeurons.get(i);
-                neuron.setInputValue(neuron.getInputValue() + hiddenNeuron.getOutputValue() * hiddenNeuron.getWeights().get(i));
-                neuron.calculate();
+                sum += hiddenNeuron.getOutputValue() * hiddenNeuron.getWeights().get(i);
             }
+            listOfNeurons.get(i).calculateValue(sum);
         }
     }
 
-    public void calculateErrors(int classification) {
+    public void calculateErrorsOfClassification(int classification) {
         OutputNeuron neuron;
         for (int i = 0; i < numberOfNeuronsInLayer; i++) {
             neuron = listOfNeurons.get(i);
@@ -38,8 +38,11 @@ public class OutputLayer extends Layer<OutputNeuron> {
         }
     }
 
-    public void train(ArrayList<HiddenNeuron> hiddenNeurons) {
-
+    @Override
+    public String toString() {
+        return "OutputLayer{" +
+                "listOfNeurons=" + listOfNeurons +
+                ", numberOfNeuronsInLayer=" + numberOfNeuronsInLayer +
+                '}';
     }
-
 }

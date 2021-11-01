@@ -16,18 +16,18 @@ public class HiddenLayer extends Layer<HiddenNeuron> {
         }
     }
 
-    public void classify(ArrayList<InputNeuron> inputNeurons) {
-        HiddenNeuron neuron;
+    public void calculateValues(ArrayList<InputNeuron> inputNeurons) {
+        double sum;
         for (int i = 0; i < numberOfNeuronsInLayer; i++) {
+            sum = 0.0;
             for (InputNeuron inputNeuron : inputNeurons) {
-                neuron = listOfNeurons.get(i);
-                neuron.setInputValue(neuron.getInputValue() + inputNeuron.getOutputValue() * inputNeuron.getWeights().get(i));
-                neuron.calculate();
+                sum += inputNeuron.getOutputValue() * inputNeuron.getWeights().get(i);
             }
+            listOfNeurons.get(i).calculateValue(sum);
         }
     }
 
-    public void calculateErrors(ArrayList<OutputNeuron> outputNeurons) {
+    public void calculateErrorsOfClassification(ArrayList<OutputNeuron> outputNeurons) {
         HiddenNeuron hiddenNeuron;
         double error;
         double mul;
@@ -47,12 +47,32 @@ public class HiddenLayer extends Layer<HiddenNeuron> {
         }
     }
 
-    public void correctWeights() {
-
+    public void correctWeights(ArrayList<OutputNeuron> outputNeurons, double trainCoefficient) {
+        ArrayList<ArrayList<Double>> weightsList = new ArrayList<>();
+        ArrayList<Double> weights;
+        double gradient;
+        OutputNeuron outputNeuron;
+        HiddenNeuron hiddenNeuron;
+        for (int i = 0; i < numberOfNeuronsInLayer; i++) {
+            hiddenNeuron = listOfNeurons.get(i);
+            weights = new ArrayList<>();
+            for (int j = 0; j < outputNeurons.size(); j++) {
+                outputNeuron = outputNeurons.get(j);
+                gradient = -1.0 * outputNeuron.getError() * hiddenNeuron.getOutputValue() * derivativeGauss(outputNeuron.getInputValue());
+                weights.add(hiddenNeuron.getWeights().get(j) - trainCoefficient * gradient);
+            }
+            weightsList.add(weights);
+        }
+        for (int i = 0; i < numberOfNeuronsInLayer; i++) {
+            listOfNeurons.get(i).setWeights(weightsList.get(i));
+        }
     }
 
-    public void train(ArrayList<InputNeuron> inputNeurons) {
-
+    @Override
+    public String toString() {
+        return "HiddenLayer{" +
+                "listOfNeurons=" + listOfNeurons +
+                ", numberOfNeuronsInLayer=" + numberOfNeuronsInLayer +
+                '}';
     }
-
 }

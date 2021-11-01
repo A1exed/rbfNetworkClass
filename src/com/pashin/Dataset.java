@@ -10,6 +10,9 @@ public class Dataset {
 
     private ArrayList<Data> data;
 
+    public Dataset() {
+    }
+
     public Dataset(File datasetFile, int numberOfParams) {
         this.data = new ArrayList<>();
         try {
@@ -25,7 +28,7 @@ public class Dataset {
                 data = new Data();
                 params = line.split(",");
                 for (int i = 0; i < numberOfParams; i++) {
-                    dataParams.add( 1 / Double.parseDouble(params[i]));
+                    dataParams.add(Double.parseDouble(params[i]) / 7.9);
                 }
                 data.setParams(dataParams);
                 classification = switch (params[params.length - 1]) {

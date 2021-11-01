@@ -15,12 +15,25 @@ public class OutputNeuron extends Neuron {
         // TODO: инициализация
     }
 
-    public void calculate() {
-        outputValue = Math.exp(-(Math.pow(inputValue - centre, 2) / (2 * Math.pow(radius, 2))));
+    public void calculateValue(double inputValue) {
+        setInputValue(inputValue);
+//        outputValue = inputValue;
+        outputValue = (1 / (1 + Math.pow(2.718, -inputValue)));
     }
 
     public void correctCentreAndRadius() {
         // TODO: корректировка весов
     }
 
+    @Override
+    public String toString() {
+        return "OutputNeuron{" +
+                "weights=" + weights +
+                ", inputValue=" + inputValue +
+                ", outputValue=" + outputValue +
+                ", error=" + error +
+                ", centre=" + centre +
+                ", radius=" + radius +
+                '}';
+    }
 }

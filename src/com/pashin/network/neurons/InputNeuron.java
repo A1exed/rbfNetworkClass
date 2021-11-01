@@ -8,17 +8,18 @@ public class InputNeuron extends Neuron {
         super(numberOfRelations);
     }
 
-    public void calculate() {
+    public void calculateValue(double inputValue) {
+        setInputValue(inputValue);
         outputValue = inputValue;
     }
 
-    public void classify() {
-        calculate();
+    @Override
+    public String toString() {
+        return "InputNeuron{" +
+                "weights=" + weights +
+                ", inputValue=" + inputValue +
+                ", outputValue=" + outputValue +
+                ", error=" + error +
+                '}';
     }
-
-    public void train() {
-        calculate();
-        correctWeight();
-    }
-
 }

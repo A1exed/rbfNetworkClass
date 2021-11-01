@@ -15,12 +15,25 @@ public class HiddenNeuron extends Neuron {
         // TODO: инициализация
     }
 
-    public void calculate() {
-        outputValue = Math.exp(-(Math.pow(inputValue - centre, 2) / (2 * Math.pow(radius, 2))));
+    public void calculateValue(double inputValue) {
+        setInputValue(inputValue);
+//        outputValue = Math.pow(2.718, -(Math.pow(inputValue - centre, 2) / (2 * Math.pow(radius, 2))));
+        outputValue = (1 / (1 + Math.pow(2.718, -inputValue)));
     }
 
     public void correctCentreAndRadius() {
         // TODO: корректировка весов
     }
 
+    @Override
+    public String toString() {
+        return "HiddenNeuron{" +
+                "weights=" + weights +
+                ", inputValue=" + inputValue +
+                ", outputValue=" + outputValue +
+                ", error=" + error +
+                ", centre=" + centre +
+                ", radius=" + radius +
+                '}';
+    }
 }

@@ -16,16 +16,16 @@ public abstract class Neuron {
         error = 0.0;
         weights = new ArrayList<>();
         for (int i = 0; i < numberOfRelations; i++) {
-            weights.add(Math.random() / 10);
+            weights.add(Math.random());
         }
-    }
-
-    protected void correctWeight() {
-        // TODO: корректировка весов
     }
 
     public ArrayList<Double> getWeights() {
         return weights;
+    }
+
+    public void setWeights(ArrayList<Double> weights) {
+        this.weights = weights;
     }
 
     public double getInputValue() {

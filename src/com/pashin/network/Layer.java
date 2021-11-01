@@ -13,6 +13,10 @@ public abstract class Layer<N extends Neuron> {
         this.listOfNeurons = new ArrayList<>();
     }
 
+    protected double derivativeGauss(double x) {
+        return (1 / (1 + Math.pow(2.718, -x))) * (1 - (1 / (1 + Math.pow(2.718, -x))));
+    }
+
     public ArrayList<N> getListOfNeurons() {
         return listOfNeurons;
     }
