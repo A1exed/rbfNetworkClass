@@ -10,7 +10,10 @@ public abstract class Neuron {
 
     protected double outputValue;
 
+    protected double error;
+
     protected Neuron(int numberOfRelations) {
+        error = 0.0;
         weights = new ArrayList<>();
         for (int i = 0; i < numberOfRelations; i++) {
             weights.add(Math.random() / 10);
@@ -37,4 +40,11 @@ public abstract class Neuron {
         return outputValue;
     }
 
+    public double getError() {
+        return error;
+    }
+
+    public void setError(double error) {
+        this.error = error;
+    }
 }

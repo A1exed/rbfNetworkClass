@@ -16,10 +16,24 @@ public class OutputLayer extends Layer<OutputNeuron> {
     }
 
     public void classify(ArrayList<HiddenNeuron> hiddenNeurons) {
+        OutputNeuron neuron;
         for (int i = 0; i < numberOfNeuronsInLayer; i++) {
             for (HiddenNeuron hiddenNeuron : hiddenNeurons) {
-                listOfNeurons.get(i).setInputValue(listOfNeurons.get(i).getInputValue() + hiddenNeuron.getOutputValue() * hiddenNeuron.getWeights().get(i));
-                listOfNeurons.get(i).calculate();
+                neuron = listOfNeurons.get(i);
+                neuron.setInputValue(neuron.getInputValue() + hiddenNeuron.getOutputValue() * hiddenNeuron.getWeights().get(i));
+                neuron.calculate();
+            }
+        }
+    }
+
+    public void calculateErrors(int classification) {
+        OutputNeuron neuron;
+        for (int i = 0; i < numberOfNeuronsInLayer; i++) {
+            neuron = listOfNeurons.get(i);
+            if (i == classification) {
+                neuron.setError(1.0 - neuron.getOutputValue());
+            } else {
+                neuron.setError(0.0 - neuron.getOutputValue());
             }
         }
     }

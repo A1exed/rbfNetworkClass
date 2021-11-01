@@ -10,6 +10,8 @@ public class HiddenNeuron extends Neuron {
 
     public HiddenNeuron(int numberOfRelations) {
         super(numberOfRelations);
+        centre = 0;
+        radius = 1;
         // TODO: инициализация
     }
 

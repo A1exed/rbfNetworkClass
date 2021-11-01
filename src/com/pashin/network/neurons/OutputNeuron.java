@@ -10,6 +10,8 @@ public class OutputNeuron extends Neuron {
 
     public OutputNeuron() {
         super(0);
+        centre = 0;
+        radius = 1;
         // TODO: инициализация
     }
 
