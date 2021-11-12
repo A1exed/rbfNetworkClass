@@ -25,7 +25,7 @@ public class Dataset implements Serializable {
                 data = new Data();
                 params = line.split(",");
                 for (int i = 0; i < numberOfParams; i++) {
-                    dataParams.add(Double.parseDouble(params[i]) / 7.9);
+                    dataParams.add(Double.parseDouble(params[i]) / 8);
                 }
                 data.setParams(dataParams);
                 classification = switch (params[params.length - 1]) {

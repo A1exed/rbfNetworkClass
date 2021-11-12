@@ -26,27 +26,31 @@ public class NeuralNetwork implements Serializable {
         isTrained = false;
     }
 
-    public void train(Dataset dataset, int numberOfEpoch, double trainCoefficient, int percentOfTestData) {
-        Collections.shuffle(dataset.getData());
-        int numTrainData = dataset.getData().size() * (100 - percentOfTestData) / 100;
-        Dataset trainData = new Dataset();
-        Dataset testData = new Dataset();
-        trainData.setData(new ArrayList<>());
-        testData.setData(new ArrayList<>());
-        for (Data data : dataset.getData().subList(0, numTrainData - 1)) {
-            trainData.getData().add(data);
-        }
-        for (Data data : dataset.getData().subList(numTrainData, dataset.getData().size())) {
-            testData.getData().add(data);
-        }
+    public void train(Dataset dataset, double trainCoefficient, int percentOfTestData) {
         // Инициализация центров
         hiddenLayer.initCentresAndRadius(inputLayer.getListOfNeurons(), dataset.getData().get(0));
 
         System.out.println("Начало обучения");
         int countOfErrors;
         isTrained = true;
-        for (int i = 0; i < numberOfEpoch; i++) {
-            System.out.println("Эпоха #" + i);
+        countOfErrors = 1;
+        int epoch = 1;
+        while (countOfErrors != 0 && epoch <= 1000) {
+            // Перемешиваем
+            Collections.shuffle(dataset.getData());
+            int numTrainData = dataset.getData().size() * (100 - percentOfTestData) / 100;
+            Dataset trainData = new Dataset();
+            Dataset testData = new Dataset();
+            trainData.setData(new ArrayList<>());
+            testData.setData(new ArrayList<>());
+            for (Data data : dataset.getData().subList(0, numTrainData - 1)) {
+                trainData.getData().add(data);
+            }
+            for (Data data : dataset.getData().subList(numTrainData, dataset.getData().size())) {
+                testData.getData().add(data);
+            }
+
+            System.out.println("Эпоха #" + epoch);
             for (Data data : trainData.getData()) {
                 calculateValues(data);
                 calculateErrors(data);
@@ -63,6 +67,7 @@ public class NeuralNetwork implements Serializable {
                 }
             }
             System.out.println("Ошибок классификации " + countOfErrors + "/" + testData.getData().size());
+            epoch++;
         }
         System.out.println("Обучение завершено");
     }

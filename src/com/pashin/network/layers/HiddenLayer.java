@@ -20,20 +20,26 @@ public class HiddenLayer extends Layer<HiddenNeuron> implements Serializable {
 
     public void initCentresAndRadius(ArrayList<InputNeuron> inputNeurons, Data data) {
         HiddenNeuron hiddenNeuron;
+        double rand = 0;
         // Центры
-        for (int i = 0; i < numberOfNeuronsInLayer; i++) {
-            hiddenNeuron = listOfNeurons.get(i);
-            if (inputNeurons.size() <= numberOfNeuronsInLayer) {
+        if (inputNeurons.size() <= numberOfNeuronsInLayer) {
+            for (int i = 0; i < numberOfNeuronsInLayer; i++) {
+                hiddenNeuron = listOfNeurons.get(i);
                 for (int j = 0; j < inputNeurons.size(); j++) {
-                    hiddenNeuron.getCentres().add(data.getParams().get(j) + Math.random() / 100);
+                    hiddenNeuron.getCentres().add(data.getParams().get(j) + rand);
                 }
-                for (int j = 0; j < numberOfNeuronsInLayer - inputNeurons.size(); j++) {
-                    hiddenNeuron.getCentres().add(hiddenNeuron.getCentres().get(j) + Math.random() / 100);
+                for (int j = 0; j < numberOfNeuronsInLayer - inputNeurons.size() - 1; j++) {
+                    hiddenNeuron.getCentres().add(hiddenNeuron.getCentres().get(j) + rand);
                 }
-            } else {
-                for (int j = 0; j < numberOfNeuronsInLayer; j++) {
-                    hiddenNeuron.getCentres().add(data.getParams().get(j) + Math.random() / 100);
+                rand = Math.random() / 100;
+            }
+        } else {
+            for (int i = 0; i < numberOfNeuronsInLayer; i++) {
+                hiddenNeuron = listOfNeurons.get(i);
+                for (int j = 0; j < inputNeurons.size(); j++) {
+                    hiddenNeuron.getCentres().add(data.getParams().get(j) + rand);
                 }
+                rand = Math.random() / 100;
             }
         }
         // Радиус

@@ -4,6 +4,7 @@ import com.pashin.network.NeuralNetwork;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
@@ -14,22 +15,24 @@ public class Main {
 //        2 - Iris Virginica
         Dataset dataset = new Dataset(new File("src/com/pashin/resources/iris.data"), 4);
 
-        NeuralNetwork network = new NeuralNetwork(4, 5, 3);
+        NeuralNetwork network = new NeuralNetwork(4, 200, 3);
 
-        network.train(dataset, 1000, 0.1, 15);
+        network.train(dataset, 0.0007, 15);
 
-        Data data = new Data();
-        ArrayList<Double> params = new ArrayList<>();
-        params.add(5.1 / 7.9);
-        params.add(3.5 / 7.9);
-        params.add(1.4 / 7.9);
-        params.add(0.2 / 7.9);
-        data.setParams(params);
-        network.classify(data);
+//        Data data = new Data();
+//        ArrayList<Double> params = new ArrayList<>();
+//        params.add(5.1 / 8);
+//        params.add(3.5 / 8);
+//        params.add(1.4 / 8);
+//        params.add(0.2 / 8);
+//        data.setParams(params);
+//        network.classify(data);
 
-//        for (Data data : dataset.getData()) {
-//            network.classify(data);
-//        }
+        Collections.shuffle(dataset.getData());
+        for (Data data : dataset.getData()) {
+            System.out.println(data.getClassification());
+            network.classify(data);
+        }
 
 //        Scanner in = new Scanner(System.in);
 //        System.out.println("Загрузить сеть? (0 - нет, 1 - да)");
