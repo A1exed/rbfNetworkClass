@@ -4,9 +4,10 @@ import com.pashin.network.Layer;
 import com.pashin.network.neurons.HiddenNeuron;
 import com.pashin.network.neurons.OutputNeuron;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class OutputLayer extends Layer<OutputNeuron> {
+public class OutputLayer extends Layer<OutputNeuron> implements Serializable {
 
     public OutputLayer(int numberOfNeuronsInLayer) {
         super(numberOfNeuronsInLayer);

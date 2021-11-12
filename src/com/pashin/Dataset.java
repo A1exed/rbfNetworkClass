@@ -1,12 +1,9 @@
 package com.pashin;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
-public class Dataset {
+public class Dataset implements Serializable {
 
     private ArrayList<Data> data;
 

@@ -2,7 +2,9 @@ package com.pashin.network.neurons;
 
 import com.pashin.network.Neuron;
 
-public class InputNeuron extends Neuron {
+import java.io.Serializable;
+
+public class InputNeuron extends Neuron implements Serializable {
 
     public InputNeuron(int numberOfRelations) {
         super(numberOfRelations);
@@ -16,7 +18,6 @@ public class InputNeuron extends Neuron {
     @Override
     public String toString() {
         return "InputNeuron{" +
-                "weights=" + weights +
                 ", inputValue=" + inputValue +
                 ", outputValue=" + outputValue +
                 ", error=" + error +

@@ -1,8 +1,9 @@
 package com.pashin.network;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Layer<N extends Neuron> {
+public abstract class Layer<N extends Neuron> implements Serializable {
 
     protected ArrayList<N> listOfNeurons;
 
@@ -13,9 +14,10 @@ public abstract class Layer<N extends Neuron> {
         this.listOfNeurons = new ArrayList<>();
     }
 
-    protected double derivativeGauss(double x) {
-        return (1 / (1 + Math.pow(2.718, -x))) * (1 - (1 / (1 + Math.pow(2.718, -x))));
-    }
+//    protected double derivativeGauss(double x) {
+//        return
+////        return (1 / (1 + Math.pow(2.718, -x))) * (1 - (1 / (1 + Math.pow(2.718, -x))));
+//    }
 
     public ArrayList<N> getListOfNeurons() {
         return listOfNeurons;

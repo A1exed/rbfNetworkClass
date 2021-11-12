@@ -1,10 +1,8 @@
 package com.pashin.network;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
-public abstract class Neuron {
-
-    protected ArrayList<Double> weights;
+public abstract class Neuron implements Serializable {
 
     protected double inputValue;
 
@@ -14,18 +12,6 @@ public abstract class Neuron {
 
     protected Neuron(int numberOfRelations) {
         error = 0.0;
-        weights = new ArrayList<>();
-        for (int i = 0; i < numberOfRelations; i++) {
-            weights.add(Math.random());
-        }
-    }
-
-    public ArrayList<Double> getWeights() {
-        return weights;
-    }
-
-    public void setWeights(ArrayList<Double> weights) {
-        this.weights = weights;
     }
 
     public double getInputValue() {
