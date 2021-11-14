@@ -3,6 +3,7 @@ package com.pashin.network;
 import com.pashin.Data;
 import com.pashin.Dataset;
 import com.pashin.network.layers.*;
+import com.pashin.network.neurons.OutputNeuron;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -26,11 +27,14 @@ public class NeuralNetwork implements Serializable {
         isTrained = false;
     }
 
-    public void train(Dataset dataset, double trainCoefficient, int percentOfTestData) {
+    public void train(Dataset dataset, int numOfEpoch, double trainCoefficient, int percentOfTestData) {
         // Инициализация центров
         hiddenLayer.initCentresAndRadius(inputLayer.getListOfNeurons(), dataset.getData().get(0));
 
-        System.out.println("Начало обучения");
+        Collections.shuffle(dataset.getData());
+        System.out.println("-------------------------");
+        System.out.println("||   Начало обучения   ||");
+        System.out.println("-------------------------");
         int countOfErrors;
         isTrained = true;
         countOfErrors = 1;
@@ -38,9 +42,10 @@ public class NeuralNetwork implements Serializable {
         int numTrainData = dataset.getData().size() * (100 - percentOfTestData) / 100;
         Dataset trainData = new Dataset();
         Dataset testData = new Dataset();
-        while (epoch <= 1000) {
+        double trainError;
+        double testError;
+        while (countOfErrors != 0 && epoch <= numOfEpoch) {
             // Перемешиваем
-            Collections.shuffle(dataset.getData());
             trainData.setData(new ArrayList<>());
             testData.setData(new ArrayList<>());
             for (Data data : dataset.getData().subList(0, numTrainData - 1)) {
@@ -49,13 +54,18 @@ public class NeuralNetwork implements Serializable {
             for (Data data : dataset.getData().subList(numTrainData, dataset.getData().size())) {
                 testData.getData().add(data);
             }
-
+            System.out.println("---------------------------------------");
             System.out.println("Эпоха #" + epoch);
             for (Data data : trainData.getData()) {
                 calculateValues(data);
                 calculateErrors(data);
                 correctParams(trainCoefficient);
             }
+            trainError = 0;
+            for (OutputNeuron outputNeuron : outputLayer.getListOfNeurons()) {
+                trainError += outputNeuron.getError();
+            }
+            trainError = Math.sqrt(Math.pow(trainError, 2) / outputLayer.getNumberOfNeuronsInLayer());
             countOfErrors = 0;
             for (Data data : testData.getData()) {
                 calculateValues(data);
@@ -66,10 +76,20 @@ public class NeuralNetwork implements Serializable {
                     }
                 }
             }
+            // Ошибка теста
+            testError = 0;
+            for (OutputNeuron outputNeuron : outputLayer.getListOfNeurons()) {
+                testError += outputNeuron.getError();
+            }
+            testError = Math.abs(testError / outputLayer.getNumberOfNeuronsInLayer());
             System.out.printf("Ошибок классификации %d/%d\n", countOfErrors, testData.getData().size());
+            System.out.printf("Погрешность обучения (СКО): %f\n", trainError);
+            System.out.printf("Погрешность тестирования (ср. отн. погр.): %f\n", testError);
             epoch++;
         }
-        System.out.println("Обучение завершено");
+        System.out.println("----------------------------");
+        System.out.println("||   Обучение завершено   ||");
+        System.out.println("----------------------------");
     }
 
     public void classify(Data data) {
@@ -125,6 +145,7 @@ public class NeuralNetwork implements Serializable {
     }
 
     private void correctParams(double trainCoefficient) {
+        outputLayer.correctParams(trainCoefficient);
         hiddenLayer.correctParams(inputLayer.getListOfNeurons(), outputLayer.getListOfNeurons(), trainCoefficient);
     }
 

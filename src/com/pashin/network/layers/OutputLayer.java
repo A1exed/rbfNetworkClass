@@ -9,10 +9,14 @@ import java.util.ArrayList;
 
 public class OutputLayer extends Layer<OutputNeuron> implements Serializable {
 
+    private ArrayList<Double> w0;
+
     public OutputLayer(int numberOfNeuronsInLayer) {
         super(numberOfNeuronsInLayer);
+        w0 = new ArrayList<>();
         for (int i = 0; i < numberOfNeuronsInLayer; i++) {
             super.getListOfNeurons().add(new OutputNeuron());
+            w0.add(Math.random());
         }
     }
 
@@ -23,6 +27,7 @@ public class OutputLayer extends Layer<OutputNeuron> implements Serializable {
             for (HiddenNeuron hiddenNeuron : hiddenNeurons) {
                 sum += hiddenNeuron.getOutputValue() * hiddenNeuron.getWeights().get(i);
             }
+            sum += 1 * w0.get(i);
             listOfNeurons.get(i).calculateValue(sum);
         }
     }
@@ -36,6 +41,12 @@ public class OutputLayer extends Layer<OutputNeuron> implements Serializable {
             } else {
                 neuron.setError(0.0 - neuron.getOutputValue());
             }
+        }
+    }
+
+    public void correctParams(double trainCoefficient) {
+        for (int i = 0; i < numberOfNeuronsInLayer; i++) {
+            w0.set(i, w0.get(i) - (-1 * trainCoefficient * listOfNeurons.get(i).getError()));
         }
     }
 

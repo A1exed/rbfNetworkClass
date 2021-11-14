@@ -17,7 +17,7 @@ public class Main {
 
         NeuralNetwork network = new NeuralNetwork(4, 200, 3);
 
-        network.train(dataset, 0.0007, 20);
+        network.train(dataset, 1000, 0.0007, 20);
 
         Collections.shuffle(dataset.getData());
         for (Data data : dataset.getData()) {
