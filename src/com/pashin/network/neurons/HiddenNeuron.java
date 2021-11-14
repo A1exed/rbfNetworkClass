@@ -21,15 +21,11 @@ public class HiddenNeuron extends Neuron implements Serializable {
         super(numberOfRelations);
         x = new ArrayList<>();
         centres = new ArrayList<>();
-        radius = 1;
+        radius = 1.0;
         weights = new ArrayList<>();
         for (int i = 0; i < numberOfRelations; i++) {
             weights.add(Math.random());
         }
-    }
-
-    public void correctCentreAndRadius() {
-        // TODO: корректировка весов
     }
 
     public double getDerivative() {

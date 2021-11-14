@@ -17,21 +17,19 @@ public class Main {
 
         NeuralNetwork network = new NeuralNetwork(4, 200, 3);
 
-        network.train(dataset, 0.0007, 15);
-
-//        Data data = new Data();
-//        ArrayList<Double> params = new ArrayList<>();
-//        params.add(5.1 / 8);
-//        params.add(3.5 / 8);
-//        params.add(1.4 / 8);
-//        params.add(0.2 / 8);
-//        data.setParams(params);
-//        network.classify(data);
+        network.train(dataset, 0.0007, 20);
 
         Collections.shuffle(dataset.getData());
         for (Data data : dataset.getData()) {
-            System.out.println(data.getClassification());
+            System.out.println("---------------------------------------");
             network.classify(data);
+            System.out.print("Должно быть: ");
+            int c = data.getClassification();
+            switch (c) {
+                case 0 -> System.out.printf("(%d) Iris Setosa\n", c);
+                case 1 -> System.out.printf("(%d) Iris Versicolour\n", c);
+                case 2 -> System.out.printf("(%d) Iris Virginica\n", c);
+            }
         }
 
 //        Scanner in = new Scanner(System.in);
@@ -42,16 +40,19 @@ public class Main {
 //            String path = in.next();
 //
 //            NeuralNetwork network = NeuralNetwork.openNetwork(new File(path));
-//
-//            Data data = new Data();
-//            ArrayList<Double> params = new ArrayList<>();
-//            params.add(7.0 / 7.9);
-//            params.add(3.2 / 7.9);
-//            params.add(4.7 / 7.9);
-//            params.add(1.4 / 7.9);
-//            data.setParams(params);
-//
+////
+//        Collections.shuffle(dataset.getData());
+//        for (Data data : dataset.getData()) {
+//            System.out.println("---------------------------------------");
 //            network.classify(data);
+//            System.out.print("Должно быть: ");
+//            int c = data.getClassification();
+//            switch (c) {
+//                case 0 -> System.out.printf("(%d) Iris Setosa\n", c);
+//                case 1 -> System.out.printf("(%d) Iris Versicolour\n", c);
+//                case 2 -> System.out.printf("(%d) Iris Virginica\n", c);
+//            }
+//        }
 //        } else {
 //            Dataset dataset = new Dataset(new File("src/com/pashin/resources/iris.data"), 4);
 //
@@ -59,15 +60,18 @@ public class Main {
 //
 //            network.train(dataset, 1000, 0.1);
 //
-//            Data data = new Data();
-//            ArrayList<Double> params = new ArrayList<>();
-//            params.add(5.1 / 7.9);
-//            params.add(3.5 / 7.9);
-//            params.add(1.4 / 7.9);
-//            params.add(0.2 / 7.9);
-//            data.setParams(params);
-//
+//        Collections.shuffle(dataset.getData());
+//        for (Data data : dataset.getData()) {
+//            System.out.println("---------------------------------------");
 //            network.classify(data);
+//            System.out.print("Должно быть: ");
+//            int c = data.getClassification();
+//            switch (c) {
+//                case 0 -> System.out.printf("(%d) Iris Setosa\n", c);
+//                case 1 -> System.out.printf("(%d) Iris Versicolour\n", c);
+//                case 2 -> System.out.printf("(%d) Iris Virginica\n", c);
+//            }
+//        }
 //
 //            System.out.println("Сохранить сеть? (0 - нет, 1 - да)");
 //            answer = in.nextInt();

@@ -35,12 +35,12 @@ public class NeuralNetwork implements Serializable {
         isTrained = true;
         countOfErrors = 1;
         int epoch = 1;
-        while (countOfErrors != 0 && epoch <= 1000) {
+        int numTrainData = dataset.getData().size() * (100 - percentOfTestData) / 100;
+        Dataset trainData = new Dataset();
+        Dataset testData = new Dataset();
+        while (epoch <= 1000) {
             // Перемешиваем
             Collections.shuffle(dataset.getData());
-            int numTrainData = dataset.getData().size() * (100 - percentOfTestData) / 100;
-            Dataset trainData = new Dataset();
-            Dataset testData = new Dataset();
             trainData.setData(new ArrayList<>());
             testData.setData(new ArrayList<>());
             for (Data data : dataset.getData().subList(0, numTrainData - 1)) {
@@ -54,7 +54,7 @@ public class NeuralNetwork implements Serializable {
             for (Data data : trainData.getData()) {
                 calculateValues(data);
                 calculateErrors(data);
-                correctWeights(trainCoefficient);
+                correctParams(trainCoefficient);
             }
             countOfErrors = 0;
             for (Data data : testData.getData()) {
@@ -66,7 +66,7 @@ public class NeuralNetwork implements Serializable {
                     }
                 }
             }
-            System.out.println("Ошибок классификации " + countOfErrors + "/" + testData.getData().size());
+            System.out.printf("Ошибок классификации %d/%d\n", countOfErrors, testData.getData().size());
             epoch++;
         }
         System.out.println("Обучение завершено");
@@ -78,9 +78,9 @@ public class NeuralNetwork implements Serializable {
         System.out.println("Результат классификации:");
         for (int i = 0; i < outputLayer.getListOfNeurons().size(); i++) {
             switch (i) {
-                case 0 -> System.out.println("Iris Setosa: " + outputLayer.getListOfNeurons().get(i).outputValue);
-                case 1 -> System.out.println("Iris Versicolour: " + outputLayer.getListOfNeurons().get(i).outputValue);
-                case 2 -> System.out.println("Iris Virginica: " + outputLayer.getListOfNeurons().get(i).outputValue);
+                case 0 -> System.out.printf("(%d) Iris Setosa: %f\n", i, outputLayer.getListOfNeurons().get(i).outputValue);
+                case 1 -> System.out.printf("(%d) Iris Versicolour: %f\n", i, outputLayer.getListOfNeurons().get(i).outputValue);
+                case 2 -> System.out.printf("(%d) Iris Virginica: %f\n", i, outputLayer.getListOfNeurons().get(i).outputValue);
             }
         }
     }
@@ -120,12 +120,12 @@ public class NeuralNetwork implements Serializable {
     }
 
     private void calculateErrors(Data data) {
-        outputLayer.calculateErrorsOfClassification(data.getClassification());
-        hiddenLayer.calculateErrorsOfClassification(outputLayer.getListOfNeurons());
+        outputLayer.calculateErrors(data.getClassification());
+        hiddenLayer.calculateErrors(outputLayer.getListOfNeurons());
     }
 
-    private void correctWeights(double trainCoefficient) {
-        hiddenLayer.correctWeights(inputLayer.getListOfNeurons(), outputLayer.getListOfNeurons(), trainCoefficient);
+    private void correctParams(double trainCoefficient) {
+        hiddenLayer.correctParams(inputLayer.getListOfNeurons(), outputLayer.getListOfNeurons(), trainCoefficient);
     }
 
 }
