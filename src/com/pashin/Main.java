@@ -15,22 +15,9 @@ public class Main {
 //        2 - Iris Virginica
         Dataset dataset = new Dataset(new File("src/com/pashin/resources/iris.data"), 4);
 
-        NeuralNetwork network = new NeuralNetwork(4, 200, 3);
+        NeuralNetwork network = new NeuralNetwork(4, 8, 3);
 
-        network.train(dataset, 1000, 0.0007, 20);
-
-        Collections.shuffle(dataset.getData());
-        for (Data data : dataset.getData()) {
-            System.out.println("---------------------------------------");
-            network.classify(data);
-            System.out.print("Должно быть: ");
-            int c = data.getClassification();
-            switch (c) {
-                case 0 -> System.out.printf("(%d) Iris Setosa\n", c);
-                case 1 -> System.out.printf("(%d) Iris Versicolour\n", c);
-                case 2 -> System.out.printf("(%d) Iris Virginica\n", c);
-            }
-        }
+        network.train(dataset, 2000, 0.0012, 10);
 
 //        Scanner in = new Scanner(System.in);
 //        System.out.println("Загрузить сеть? (0 - нет, 1 - да)");

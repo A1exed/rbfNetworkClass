@@ -42,46 +42,44 @@ public class NeuralNetwork implements Serializable {
         int numTrainData = dataset.getData().size() * (100 - percentOfTestData) / 100;
         Dataset trainData = new Dataset();
         Dataset testData = new Dataset();
-        double trainError;
-        double testError;
-        while (countOfErrors != 0 && epoch <= numOfEpoch) {
+        trainData.setData(new ArrayList<>());
+        testData.setData(new ArrayList<>());
+        for (Data data : dataset.getData().subList(0, numTrainData - 1)) {
+            trainData.getData().add(data);
+        }
+        for (Data data : dataset.getData().subList(numTrainData, dataset.getData().size())) {
+            testData.getData().add(data);
+        }
+        double trainError = 0;
+        double testError = 0;
+        while (epoch <= numOfEpoch) {
             // Перемешиваем
-            trainData.setData(new ArrayList<>());
-            testData.setData(new ArrayList<>());
-            for (Data data : dataset.getData().subList(0, numTrainData - 1)) {
-                trainData.getData().add(data);
-            }
-            for (Data data : dataset.getData().subList(numTrainData, dataset.getData().size())) {
-                testData.getData().add(data);
-            }
+            trainError = 0;
             System.out.println("---------------------------------------");
             System.out.println("Эпоха #" + epoch);
             for (Data data : trainData.getData()) {
                 calculateValues(data);
                 calculateErrors(data);
                 correctParams(trainCoefficient);
+                for (OutputNeuron outputNeuron : outputLayer.getListOfNeurons()) {
+                    trainError += Math.pow(outputNeuron.getError(), 2);
+                }
             }
-            trainError = 0;
-            for (OutputNeuron outputNeuron : outputLayer.getListOfNeurons()) {
-                trainError += outputNeuron.getError();
-            }
-            trainError = Math.sqrt(Math.pow(trainError, 2) / outputLayer.getNumberOfNeuronsInLayer());
+            trainError = Math.sqrt(trainError / (outputLayer.getNumberOfNeuronsInLayer() * numTrainData - 1));
+            // Ошибка теста
+            testError = 0;
             countOfErrors = 0;
             for (Data data : testData.getData()) {
                 calculateValues(data);
                 for (int j = 0; j < outputLayer.getListOfNeurons().size(); j++) {
+                    testError += Math.abs(outputLayer.getListOfNeurons().get(j).getError());
                     if (j != data.getClassification() && outputLayer.getListOfNeurons().get(j).getOutputValue() >= outputLayer.getListOfNeurons().get(data.getClassification()).getOutputValue()) {
                         countOfErrors++;
                         j = outputLayer.getListOfNeurons().size();
                     }
                 }
             }
-            // Ошибка теста
-            testError = 0;
-            for (OutputNeuron outputNeuron : outputLayer.getListOfNeurons()) {
-                testError += outputNeuron.getError();
-            }
-            testError = Math.abs(testError / outputLayer.getNumberOfNeuronsInLayer());
+            testError = testError / (outputLayer.getNumberOfNeuronsInLayer() * (dataset.getData().size() - numTrainData - 1));
             System.out.printf("Ошибок классификации %d/%d\n", countOfErrors, testData.getData().size());
             System.out.printf("Погрешность обучения (СКО): %f\n", trainError);
             System.out.printf("Погрешность тестирования (ср. отн. погр.): %f\n", testError);
@@ -90,6 +88,34 @@ public class NeuralNetwork implements Serializable {
         System.out.println("----------------------------");
         System.out.println("||   Обучение завершено   ||");
         System.out.println("----------------------------");
+
+        System.out.println("-----------------------------");
+        System.out.println("||   Начало тестирования   ||");
+        System.out.println("-----------------------------");
+        testError = 0;
+        for (Data data : testData.getData()) {
+            System.out.println("---------------------------------------");
+            classify(data);
+            System.out.print("Должно быть: ");
+            int c = data.getClassification();
+            switch (c) {
+                case 0 -> System.out.printf("(%d) Iris Setosa\n", c);
+                case 1 -> System.out.printf("(%d) Iris Versicolour\n", c);
+                case 2 -> System.out.printf("(%d) Iris Virginica\n", c);
+            }
+            for (OutputNeuron outputNeuron : outputLayer.getListOfNeurons()) {
+                testError += Math.abs(outputNeuron.getError());
+            }
+        }
+        testError = testError / (outputLayer.getNumberOfNeuronsInLayer() * (dataset.getData().size() - numTrainData - 1));
+
+        System.out.println("--------------------------------");
+        System.out.println("||   Тестирование завершено   ||");
+        System.out.println("--------------------------------");
+        System.out.println("---------------------------------------");
+        System.out.printf("Ошибок классификации %d/%d\n", countOfErrors, testData.getData().size());
+        System.out.printf("Погрешность обучения (СКО): %f\n", trainError);
+        System.out.printf("Погрешность тестирования (ср. отн. погр.): %f\n", testError);
     }
 
     public void classify(Data data) {

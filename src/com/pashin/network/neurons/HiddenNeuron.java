@@ -13,31 +13,41 @@ public class HiddenNeuron extends Neuron implements Serializable {
 
     private ArrayList<Double> x;
 
-    private double radius;
+    private ArrayList<Double> radius;
 
-    private double derivative;
+    private double derivativeC;
+
+    private double derivativeR;
 
     public HiddenNeuron(int numberOfRelations) {
         super(numberOfRelations);
         x = new ArrayList<>();
         centres = new ArrayList<>();
-        radius = 1.0;
+        radius = new ArrayList<>();
         weights = new ArrayList<>();
         for (int i = 0; i < numberOfRelations; i++) {
             weights.add(Math.random());
         }
     }
 
-    public double getDerivative() {
-        return derivative;
+    public double getDerivativeC() {
+        return derivativeC;
     }
 
-    public void setDerivative(double derivative) {
-        this.derivative = derivative;
+    public void setDerivativeC(double derivativeC) {
+        this.derivativeC = derivativeC;
     }
 
-    public void setOutputValue(double outputValue) {
-        this.outputValue = outputValue;
+    public double getDerivativeR() {
+        return derivativeR;
+    }
+
+    public void setDerivativeR(double derivativeR) {
+        this.derivativeR = derivativeR;
+    }
+
+    public void setOutputValue(double newOutputValue) {
+        outputValue = newOutputValue;
     }
 
     public double getOutputValue() {
@@ -52,11 +62,11 @@ public class HiddenNeuron extends Neuron implements Serializable {
         this.x = x;
     }
 
-    public double getRadius() {
+    public ArrayList<Double> getRadius() {
         return radius;
     }
 
-    public void setRadius(double radius) {
+    public void setRadius(ArrayList<Double> radius) {
         this.radius = radius;
     }
 

@@ -21,9 +21,9 @@ public class HiddenLayer extends Layer<HiddenNeuron> implements Serializable {
 
     public void initCentresAndRadius(ArrayList<InputNeuron> inputNeurons, Data data) {
         for (HiddenNeuron hiddenNeuron1 : listOfNeurons) {
-            hiddenNeuron1.setRadius(Math.random() / 10);
             for (InputNeuron ignored : inputNeurons) {
                 hiddenNeuron1.getCentres().add(Math.random());
+                hiddenNeuron1.getRadius().add(Math.random());
             }
         }
 //        HiddenNeuron hiddenNeuron;
@@ -81,13 +81,20 @@ public class HiddenLayer extends Layer<HiddenNeuron> implements Serializable {
         }
         // Расчет
         double sum;
+        double sumDC;
+        double sumDR;
         for (HiddenNeuron hiddenNeuron : listOfNeurons) {
             sum = 0;
+            sumDC = 0;
+            sumDR = 0;
             for (int i = 0; i < inputNeurons.size(); i++) {
-                sum += Math.pow(hiddenNeuron.getX().get(i) - hiddenNeuron.getCentres().get(i), 2);
+                sum += Math.pow(hiddenNeuron.getX().get(i) - hiddenNeuron.getCentres().get(i), 2) / Math.pow(hiddenNeuron.getRadius().get(i), 2);
+                sumDC += (hiddenNeuron.getX().get(i) - hiddenNeuron.getCentres().get(i)) / Math.pow(hiddenNeuron.getRadius().get(i), 2);
+                sumDR += (hiddenNeuron.getX().get(i) - hiddenNeuron.getCentres().get(i)) / Math.pow(hiddenNeuron.getRadius().get(i), 3);
             }
-            hiddenNeuron.setOutputValue(Math.pow(2.718, -sum / (2 * Math.pow(hiddenNeuron.getRadius(), 2))));
-            hiddenNeuron.setDerivative(Math.sqrt(sum) / Math.pow(hiddenNeuron.getRadius(), 2));
+            hiddenNeuron.setOutputValue(Math.pow(2.718, sum / -2));
+            hiddenNeuron.setDerivativeC(sumDC);
+            hiddenNeuron.setDerivativeR(sumDR);
         }
     }
 
@@ -124,8 +131,11 @@ public class HiddenLayer extends Layer<HiddenNeuron> implements Serializable {
         ArrayList<Double> weights;
         ArrayList<ArrayList<Double>> centresList = new ArrayList<>();
         ArrayList<Double> centres;
-        ArrayList<Double> radiuses = new ArrayList<>();
+        ArrayList<ArrayList<Double>> radiusList = new ArrayList<>();
+        ArrayList<Double> radius;
         double gradient;
+        double gradientC;
+        double gradientR;
         OutputNeuron outputNeuron;
         HiddenNeuron hiddenNeuron;
         // Веса
@@ -143,18 +153,22 @@ public class HiddenLayer extends Layer<HiddenNeuron> implements Serializable {
         for (int i = 0; i < numberOfNeuronsInLayer; i++) {
             hiddenNeuron = listOfNeurons.get(i);
             centres = new ArrayList<>();
+            radius = new ArrayList<>();
             for (int j = 0; j < inputNeurons.size(); j++) {
-                gradient = -1.0 * hiddenNeuron.getError() * hiddenNeuron.getOutputValue() * hiddenNeuron.getDerivative();
-                centres.add(hiddenNeuron.getCentres().get(j) - trainCoefficient * gradient);
+                gradientC = -1.0 * hiddenNeuron.getError() * hiddenNeuron.getOutputValue() * hiddenNeuron.getDerivativeC();
+                gradientR = -1.0 * hiddenNeuron.getError() * hiddenNeuron.getOutputValue() * hiddenNeuron.getDerivativeR();
+                centres.add(hiddenNeuron.getCentres().get(j) - trainCoefficient * gradientC);
+                radius.add(hiddenNeuron.getRadius().get(j) - trainCoefficient * gradientR);
             }
             centresList.add(centres);
-            gradient = -1.0 * hiddenNeuron.getError() * hiddenNeuron.getOutputValue() * hiddenNeuron.getDerivative() / hiddenNeuron.getRadius();
-            radiuses.add(hiddenNeuron.getRadius() - trainCoefficient * gradient);
+            radiusList.add(radius);
+//            gradient = -1.0 * hiddenNeuron.getError() * hiddenNeuron.getOutputValue() * hiddenNeuron.getDerivative() / hiddenNeuron.getRadius();
+//            radiuses.add(hiddenNeuron.getRadius() - trainCoefficient * gradient);
         }
         for (int i = 0; i < numberOfNeuronsInLayer; i++) {
             listOfNeurons.get(i).setWeights(weightsList.get(i));
             listOfNeurons.get(i).setCentres(centresList.get(i));
-            listOfNeurons.get(i).setRadius(radiuses.get(i));
+            listOfNeurons.get(i).setRadius(radiusList.get(i));
         }
     }
 
