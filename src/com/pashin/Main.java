@@ -15,7 +15,7 @@ public class Main {
 //        2 - Iris Virginica
         Dataset dataset = new Dataset(new File("src/com/pashin/resources/iris.data"), 4);
 
-        NeuralNetwork network = new NeuralNetwork(4, 8, 3);
+        NeuralNetwork network = new NeuralNetwork(4, 3, 3);
 
         network.train(dataset, 10000, 0.0015, 20);
 
