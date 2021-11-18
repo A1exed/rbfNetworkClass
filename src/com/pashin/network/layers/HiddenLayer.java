@@ -20,10 +20,10 @@ public class HiddenLayer extends Layer<HiddenNeuron> implements Serializable {
     }
 
     public void initCentresAndRadius(ArrayList<InputNeuron> inputNeurons, Data data) {
-        for (HiddenNeuron hiddenNeuron1 : listOfNeurons) {
+        for (HiddenNeuron hiddenNeuron : listOfNeurons) {
             for (InputNeuron ignored : inputNeurons) {
-                hiddenNeuron1.getCentres().add(Math.random());
-                hiddenNeuron1.getRadius().add(Math.random());
+                hiddenNeuron.getCentres().add(Math.random());
+                hiddenNeuron.getRadius().add(Math.random());
             }
         }
 //        HiddenNeuron hiddenNeuron;
@@ -65,7 +65,9 @@ public class HiddenLayer extends Layer<HiddenNeuron> implements Serializable {
 //                    }
 //                }
 //            }
-//            hiddenNeuron.setRadius(Math.sqrt(tempR / (numberOfNeuronsInLayer - 1)));
+//            for (int j = 0; j < inputNeurons.size(); j++) {
+//                hiddenNeuron.getRadius().add(Math.sqrt(tempR / (numberOfNeuronsInLayer - 1)));
+//            }
 //        }
     }
 
@@ -90,7 +92,7 @@ public class HiddenLayer extends Layer<HiddenNeuron> implements Serializable {
             for (int i = 0; i < inputNeurons.size(); i++) {
                 sum += Math.pow(hiddenNeuron.getX().get(i) - hiddenNeuron.getCentres().get(i), 2) / Math.pow(hiddenNeuron.getRadius().get(i), 2);
                 sumDC += (hiddenNeuron.getX().get(i) - hiddenNeuron.getCentres().get(i)) / Math.pow(hiddenNeuron.getRadius().get(i), 2);
-                sumDR += (hiddenNeuron.getX().get(i) - hiddenNeuron.getCentres().get(i)) / Math.pow(hiddenNeuron.getRadius().get(i), 3);
+                sumDR += Math.pow(hiddenNeuron.getX().get(i) - hiddenNeuron.getCentres().get(i), 2) / Math.pow(hiddenNeuron.getRadius().get(i), 3);
             }
             hiddenNeuron.setOutputValue(Math.pow(2.718, sum / -2));
             hiddenNeuron.setDerivativeC(sumDC);
@@ -162,8 +164,6 @@ public class HiddenLayer extends Layer<HiddenNeuron> implements Serializable {
             }
             centresList.add(centres);
             radiusList.add(radius);
-//            gradient = -1.0 * hiddenNeuron.getError() * hiddenNeuron.getOutputValue() * hiddenNeuron.getDerivative() / hiddenNeuron.getRadius();
-//            radiuses.add(hiddenNeuron.getRadius() - trainCoefficient * gradient);
         }
         for (int i = 0; i < numberOfNeuronsInLayer; i++) {
             listOfNeurons.get(i).setWeights(weightsList.get(i));
