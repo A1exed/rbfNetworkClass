@@ -80,7 +80,7 @@ public class NeuralNetwork implements Serializable {
                     }
                 }
             }
-            testError = testError / (outputLayer.getNumberOfNeuronsInLayer() * (dataset.getData().size() - numTrainData - 1));
+            testError = testError / (outputLayer.getNumberOfNeuronsInLayer() * testData.getData().size() - 1);
             System.out.printf("Ошибок классификации %d/%d\n", countOfErrors, testData.getData().size());
             System.out.printf("Погрешность обучения (СКО): %f\n", trainError);
             System.out.printf("Погрешность тестирования (ср. отн. погр.): %f\n", testError);
@@ -108,7 +108,7 @@ public class NeuralNetwork implements Serializable {
                 testError += Math.abs(outputNeuron.getError());
             }
         }
-        testError = testError / (outputLayer.getNumberOfNeuronsInLayer() * (dataset.getData().size() - numTrainData - 1));
+        testError = testError / (outputLayer.getNumberOfNeuronsInLayer() * testData.getData().size() - 1);
 
         System.out.println("--------------------------------");
         System.out.println("||   Тестирование завершено   ||");
