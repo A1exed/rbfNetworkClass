@@ -32,11 +32,11 @@ public class OutputLayer extends Layer<OutputNeuron> implements Serializable {
         }
     }
 
-    public void calculateErrors(double result) {
+    public void calculateErrors(int classification) {
         OutputNeuron neuron;
         for (int i = 0; i < numberOfNeuronsInLayer; i++) {
             neuron = listOfNeurons.get(i);
-            if (i == result) {
+            if (i == classification) {
                 neuron.setError(1.0 - neuron.getOutputValue());
             } else {
                 neuron.setError(0.0 - neuron.getOutputValue());

@@ -34,7 +34,7 @@ public class Dataset implements Serializable {
                     case "Iris-virginica" -> 2;
                     default -> 0;
                 };
-                data.setResult(classification);
+                data.setClassification(classification);
                 this.data.add(data);
                 line = bufferedReader.readLine();
             }

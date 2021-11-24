@@ -14,7 +14,7 @@ public class Main {
 
         NeuralNetwork network = new NeuralNetwork(4, 4, 3);
 
-        network.trainClassification(dataset, 3000, 0.0015, 20);
+        network.train(dataset, 3000, 0.0015, 20);
 
 //        Scanner in = new Scanner(System.in);
 //        System.out.println("Загрузить сеть? (0 - нет, 1 - да)");

@@ -7,7 +7,7 @@ public class Data implements Serializable {
 
     private ArrayList<Double> params;
 
-    private double result;
+    private int classification;
 
     public Data() {
 
@@ -21,19 +21,19 @@ public class Data implements Serializable {
         this.params = params;
     }
 
-    public double getResult() {
-        return result;
+    public int getClassification() {
+        return classification;
     }
 
-    public void setResult(double result) {
-        this.result = result;
+    public void setClassification(int classification) {
+        this.classification = classification;
     }
 
     @Override
     public String toString() {
         return "Data{" +
                 "params=" + params +
-                ", result=" + result +
+                ", classification=" + classification +
                 '}';
     }
 }
