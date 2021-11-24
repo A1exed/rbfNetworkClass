@@ -10,7 +10,7 @@ public class Dataset implements Serializable {
     public Dataset() {
     }
 
-    public Dataset(File datasetFile, int numberOfParams) {
+    public Dataset(File datasetFile, int numberOfParams, double normalizeCoefficient) {
         this.data = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader(datasetFile);
@@ -25,7 +25,7 @@ public class Dataset implements Serializable {
                 data = new Data();
                 params = line.split(",");
                 for (int i = 0; i < numberOfParams; i++) {
-                    dataParams.add(Double.parseDouble(params[i]) / 8);
+                    dataParams.add(Double.parseDouble(params[i]) / normalizeCoefficient);
                 }
                 data.setParams(dataParams);
                 classification = switch (params[params.length - 1]) {
@@ -34,7 +34,7 @@ public class Dataset implements Serializable {
                     case "Iris-virginica" -> 2;
                     default -> 0;
                 };
-                data.setClassification(classification);
+                data.setResult(classification);
                 this.data.add(data);
                 line = bufferedReader.readLine();
             }

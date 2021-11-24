@@ -3,9 +3,6 @@ package com.pashin;
 import com.pashin.network.NeuralNetwork;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
 
 public class Main {
 
@@ -13,11 +10,11 @@ public class Main {
 //        0 - Iris Setosa
 //        1 - Iris Versicolour
 //        2 - Iris Virginica
-        Dataset dataset = new Dataset(new File("src/com/pashin/resources/iris.data"), 4);
+        Dataset dataset = new Dataset(new File("src/com/pashin/resources/iris.data"), 4, 8);
 
-        NeuralNetwork network = new NeuralNetwork(4, 3, 3);
+        NeuralNetwork network = new NeuralNetwork(4, 4, 3);
 
-        network.train(dataset, 10000, 0.0015, 20);
+        network.trainClassification(dataset, 3000, 0.0015, 20);
 
 //        Scanner in = new Scanner(System.in);
 //        System.out.println("Загрузить сеть? (0 - нет, 1 - да)");

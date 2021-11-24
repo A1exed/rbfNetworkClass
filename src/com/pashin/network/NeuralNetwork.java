@@ -27,7 +27,7 @@ public class NeuralNetwork implements Serializable {
         isTrained = false;
     }
 
-    public void train(Dataset dataset, int numOfEpoch, double trainCoefficient, int percentOfTestData) {
+    public void trainClassification(Dataset dataset, int numOfEpoch, double trainCoefficient, int percentOfTestData) {
         // Инициализация центров
         hiddenLayer.initCentresAndRadius(inputLayer.getListOfNeurons(), dataset.getData().get(0));
 
@@ -73,7 +73,7 @@ public class NeuralNetwork implements Serializable {
                 calculateValues(data);
                 for (int j = 0; j < outputLayer.getListOfNeurons().size(); j++) {
                     testError += Math.abs(outputLayer.getListOfNeurons().get(j).getError());
-                    if (j != data.getClassification() && outputLayer.getListOfNeurons().get(j).getOutputValue() >= outputLayer.getListOfNeurons().get(data.getClassification()).getOutputValue()) {
+                    if (j != data.getResult() && outputLayer.getListOfNeurons().get(j).getOutputValue() >= outputLayer.getListOfNeurons().get((int) data.getResult()).getOutputValue()) {
                         countOfErrors++;
                         j = outputLayer.getListOfNeurons().size();
                     }
@@ -97,7 +97,7 @@ public class NeuralNetwork implements Serializable {
             System.out.println("---------------------------------------");
             classify(data);
             System.out.print("Должно быть: ");
-            int c = data.getClassification();
+            int c = (int) data.getResult();
             switch (c) {
                 case 0 -> System.out.printf("(%d) Iris Setosa\n", c);
                 case 1 -> System.out.printf("(%d) Iris Versicolour\n", c);
@@ -166,7 +166,7 @@ public class NeuralNetwork implements Serializable {
     }
 
     private void calculateErrors(Data data) {
-        outputLayer.calculateErrors(data.getClassification());
+        outputLayer.calculateErrors(data.getResult());
         hiddenLayer.calculateErrors(outputLayer.getListOfNeurons());
     }
 
