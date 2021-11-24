@@ -121,6 +121,7 @@ public class NeuralNetwork implements Serializable {
     public void classify(Data data) {
         if (!isTrained) hiddenLayer.initCentresAndRadius(inputLayer.getListOfNeurons(), data);
         calculateValues(data);
+        calculateErrors(data);
         System.out.println("Результат классификации:");
         for (int i = 0; i < outputLayer.getListOfNeurons().size(); i++) {
             switch (i) {
