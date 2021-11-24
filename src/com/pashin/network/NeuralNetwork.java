@@ -44,7 +44,7 @@ public class NeuralNetwork implements Serializable {
         Dataset testData = new Dataset();
         trainData.setData(new ArrayList<>());
         testData.setData(new ArrayList<>());
-        for (Data data : dataset.getData().subList(0, numTrainData - 1)) {
+        for (Data data : dataset.getData().subList(0, numTrainData)) {
             trainData.getData().add(data);
         }
         for (Data data : dataset.getData().subList(numTrainData, dataset.getData().size())) {
