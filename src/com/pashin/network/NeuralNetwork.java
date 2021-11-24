@@ -71,6 +71,7 @@ public class NeuralNetwork implements Serializable {
             countOfErrors = 0;
             for (Data data : testData.getData()) {
                 calculateValues(data);
+                calculateErrors(data);
                 for (int j = 0; j < outputLayer.getListOfNeurons().size(); j++) {
                     testError += Math.abs(outputLayer.getListOfNeurons().get(j).getError());
                     if (j != data.getClassification() && outputLayer.getListOfNeurons().get(j).getOutputValue() >= outputLayer.getListOfNeurons().get(data.getClassification()).getOutputValue()) {
@@ -121,7 +122,6 @@ public class NeuralNetwork implements Serializable {
     public void classify(Data data) {
         if (!isTrained) hiddenLayer.initCentresAndRadius(inputLayer.getListOfNeurons(), data);
         calculateValues(data);
-        calculateErrors(data);
         System.out.println("Результат классификации:");
         for (int i = 0; i < outputLayer.getListOfNeurons().size(); i++) {
             switch (i) {
